@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-date-picker';
 import './App.scss';
+
+
 
 const apiQuery = (endpoint, query) => {
   const queryString = Object.entries(query)
@@ -11,25 +14,34 @@ const apiQuery = (endpoint, query) => {
   return queryString
 }
 
+const stringIsEmpty = (string) => {
+  return !string || !(string.trim());
+};
+
+const today = new Date();
+
 class App extends Component {
   state = {
     newNote: {
-      note: '',
-      date: '',
+      content: '',
+      deadline: '',
+      completed: false,
     },
+    date: today,
     notes: [],
     page: 1,
     total_pages: 0,
     input_placeholder: 'Add another task',
   }
+  onDateChange = date => this.setState({ date })
   getNotes = (page = 1) => {
-    ;
     fetch(apiQuery('notes', { page })).then(
       response => response.json()
     ).then(data => {
       const { page, notes, total_pages } = data;
+      const newPage = page +1;
       this.setState({
-        page,
+        page: newPage,
         notes: this.state.notes.concat(notes),
         total_pages,
       })
@@ -40,23 +52,46 @@ class App extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.page !== this.state.total_pages) {
-      const page = prevState.page + 1;
-      this.getNotes(page);
+      this.getNotes(prevState.page + 1);
     }
   };
   postNewTask = () => {
-    const string = this.state.newNote.note.trim();
-    if (string.length) {
-      console.log(string);
-    } else {
-      console.log('string is faulty');
+    try {
+      const string = this.state.inputField;
+      if (stringIsEmpty(string)) throw {
+        ErrorType: 'empty-string',
+        ErrorText: 'Input string is empty'
+      };
+      const note = {
+        content: this.state.inputField,
+        deadline: this.state.date,
+        completed: false,
+      }
+      fetch(apiQuery('notes', {}), {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ note }),
+      }).then(response => response.json())
+        .then(data => this.setState({ notes: this.state.notes.concat(data.note) }));
+    } catch (err) {
+      this.setState({
+        input: '',
+        input_placeholder: 'Task cannot be empty',
+      })
     }
+  }
+
+  onInputChange = (event) => {
+    this.setState({ inputField: event.target.value });
   }
 
   render() {
     return (
       <div className="App">
-        <nav> <img className="brand-image" src="http://useo.lh.pl/useo_v2/wp-content/uploads/2018/01/useo_logo_light.png" alt="useo brand" /> </nav>
+        <nav> <img className="brand-image"
+          src="http://useo.lh.pl/useo_v2/wp-content/uploads/2018/01/useo_logo_light.png" alt="useo brand" /> </nav>
         <main>
           <header className="App-header">
             My Todo List
@@ -72,8 +107,13 @@ class App extends Component {
               </tr>
               <tr>
                 <th> </th>
-                <th><input onChange={(event) => this.setState({ newNote: { ...this.state.newNote, note: event.target.value }, })} className="new-task" size='' placeholder={this.state.input_placeholder}></input></th>
-                <th><i className="far fa-calendar-alt" /></th>
+                <th><input onChange={(event) => this.onInputChange(event)} className="new-task" size='' placeholder={this.state.input_placeholder}></input></th>
+                <th>
+                  <DatePicker
+                    value={this.state.date}
+                    minDate={today}
+                    onChange={this.onDateChange} />
+                </th>
                 <th><button onClick={() => this.postNewTask()}><i className="fas fa-plus" /></button></th>
               </tr>
               {this.state.notes.map(note => (
