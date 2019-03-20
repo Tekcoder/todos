@@ -9,19 +9,36 @@ nav {
   height: 40px;
   background: orange;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   span {
     line-height: 40px;
   }
 }
 
+img.brand-image {
+  margin: auto 0;
+  height: 24px;
+}
+
 footer {
   background: grey;
   position: fixed;
-  height: 40px;
+  height: 24px;
   width: 100vw;
   bottom: 0;
   display: flex;
   justify-content: space-between;
+  align-content: center;
+  padding: 8px 0;
+  a{
+    display:flex;
+    align-content: center;
+    i {
+      margin:auto 8px auto 0px;
+    }
+  }
 }
 
 main {
@@ -58,9 +75,6 @@ table {
   input.new-task {
     width: 100%;
     word-break: break-all;
-  }
-  th {
-    padding: 6px;
   }
   tr{
     &.completed{

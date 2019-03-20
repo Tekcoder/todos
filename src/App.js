@@ -20,6 +20,7 @@ class App extends Component {
     notes: [],
     page: 1,
     total_pages: 0,
+    input_placeholder: 'Add another task',
   }
   getNotes = (page = 1) => {
     ;
@@ -30,7 +31,7 @@ class App extends Component {
       this.setState({
         page,
         notes: this.state.notes.concat(notes),
-        total_pages
+        total_pages,
       })
     })
   }
@@ -43,42 +44,56 @@ class App extends Component {
       this.getNotes(page);
     }
   };
+  postNewTask = () => {
+    const string = this.state.newNote.note.trim();
+    if (string.length) {
+      console.log(string);
+    } else {
+      console.log('string is faulty');
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <nav> <span>useo</span> </nav>
+        <nav> <img className="brand-image" src="http://useo.lh.pl/useo_v2/wp-content/uploads/2018/01/useo_logo_light.png" alt="useo brand" /> </nav>
         <main>
           <header className="App-header">
             My Todo List
         </header>
           <table>
-            <tr>
-              <th colSpan="3"><input type="checkbox" /></th>
-              <th>
-                <button><i class="fas fa-check"></i></button>
-                <button><i class="fas fa-trash-alt"></i></button>
-              </th>
-            </tr>
-            <tr>
-              <th> </th>
-              <th><input onChange={(event) => this.setState({ newNote: {...this.state.newNote, note: event.target.value }, })} className="new-task" size='' placeholder="Add another task"></input></th>
-              <th><i class="far fa-calendar-alt"></i></th>
-              <th><button><i class="fas fa-plus"></i></button></th>
-            </tr>
-            {this.state.notes.map(note => (
-              <tr className={note.completed && "completed"}>
-                <td><input type="checkbox" /></td>
-                <td>{note.content}</td>
-                <td>{note.deadline}</td>
-                <td><button><i class="fas fa-check"></i>
-                </button>
-                  <button><i class="fas fa-trash-alt"></i></button>
-                </td>
+            <tbody>
+              <tr>
+                <th colSpan="3"><input type="checkbox" /></th>
+                <th>
+                  <button><i className="fas fa-check" /></button>
+                  <button><i className="fas fa-trash-alt" /></button>
+                </th>
               </tr>
-            ))}
+              <tr>
+                <th> </th>
+                <th><input onChange={(event) => this.setState({ newNote: { ...this.state.newNote, note: event.target.value }, })} className="new-task" size='' placeholder={this.state.input_placeholder}></input></th>
+                <th><i className="far fa-calendar-alt" /></th>
+                <th><button onClick={() => this.postNewTask()}><i className="fas fa-plus" /></button></th>
+              </tr>
+              {this.state.notes.map(note => (
+                <tr className={note.completed ? "completed" : undefined}>
+                  <td><input type="checkbox" checked={note.isChecked} /></td>
+                  <td>{note.content}</td>
+                  <td>{note.deadline}</td>
+                  <td><button><i className="fas fa-check" />
+                  </button>
+                    <button><i className="fas fa-trash-alt" /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </main>
-        <footer> <span>useo</span> <span>f</span> </footer>
+        <footer>
+          <img className="brand-image" src="http://useo.lh.pl/useo_v2/wp-content/uploads/2018/01/useo_logo_light.png" alt="useo brand" /> <a className="facebook-link" href="http://facebook.com">
+            <i className="fab fa-facebook-f" />
+          </a> </footer>
       </div>
     );
   }
