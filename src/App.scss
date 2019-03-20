@@ -1,3 +1,9 @@
+$DARK_GREY: #EAEBEC;
+$LIGHTEST: #FAFAFA;
+$LIGHT: #F7F7F7;
+$ORANGE: #ED633C;
+$ICON_COLOR: #6C6C6C;
+
 .App {
   text-align: center;
 }
@@ -7,7 +13,7 @@ nav {
   text-align: center;
   position: fixed;
   height: 40px;
-  background: orange;
+  background: $ORANGE;
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -22,8 +28,16 @@ img.brand-image {
   height: 24px;
 }
 
+button {
+  background: none;
+  border: none;
+  :hover {
+    cursor: pointer;
+  }
+}
+
 footer {
-  background: grey;
+  background: $LIGHT;
   position: fixed;
   height: 24px;
   width: 100vw;
@@ -37,6 +51,7 @@ footer {
     align-content: center;
     i {
       margin:auto 8px auto 0px;
+      color: $ICON_COLOR;
     }
   }
 }
@@ -61,27 +76,38 @@ main {
   font-size: calc(10px + 2vmin);
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 table {
   min-width: 360px;
-  background: grey;
+  background: $LIGHTEST;
   width: -webkit-fill-available;
   text-align: left;
   empty-cells: show;
   word-wrap:break-word;
+  th {
+    background: $DARK_GREY;
+  }
   input.new-task {
     width: 100%;
     word-break: break-all;
   }
   tr{
     &.completed{
-      background: green;
-      i {
-        color: lime;
+      background: $LIGHT;
+      i.fa-check {
+        color: $ORANGE;
       }
     }
+    i {
+      color: $ICON_COLOR;
+    }
   }
+  td {
+    word-wrap: break-word;
+    max-width: 40vw;
+  }
+}
+
+
+div.react-date-picker__wrapper {
+  border: none;
 }
