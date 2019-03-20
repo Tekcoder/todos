@@ -5,11 +5,10 @@
 nav {
   color: white;
   text-align: center;
-  position: absolute;
+  position: fixed;
   height: 40px;
   background: orange;
   width: 100vw;
-  
   span {
     line-height: 40px;
   }
@@ -17,32 +16,58 @@ nav {
 
 footer {
   background: grey;
-  position: absolute;
+  position: fixed;
   height: 40px;
   width: 100vw;
   bottom: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+main {
+  padding: 40px 0;
+  @media screen and (min-width: 600px) {
+    padding: 40px 10vw;
+  }
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  width: 100%;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+table {
+  min-width: 360px;
+  background: grey;
+  width: -webkit-fill-available;
+  text-align: left;
+  empty-cells: show;
+  word-wrap:break-word;
+  input.new-task {
+    width: 100%;
+    word-break: break-all;
   }
-  to {
-    transform: rotate(360deg);
+  th {
+    padding: 6px;
+  }
+  tr{
+    &.completed{
+      background: green;
+      i {
+        color: lime;
+      }
+    }
   }
 }
