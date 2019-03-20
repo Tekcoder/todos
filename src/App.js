@@ -17,7 +17,7 @@ class App extends Component {
         <header className="App-header">
           {data ? <div>We've got the data</div> : <div>'Hi'</div>}
         </header>
-        <footer> </footer>
+        <footer> tempftr </footer>
       </div>
     );
   }
